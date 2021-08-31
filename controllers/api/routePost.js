@@ -10,24 +10,24 @@ router.post('/', withAuth, async (request, response) => {
         const newPost = await TechBlog.create({
             ...request.body, user_id: request.session.user_id
         });
-        response.status(200).json(newPost);
+        response.json(newPost);
     } catch (err) {
-        response.status(400).json(err);
+        response.json(err);
     }
 });
 // put, using update
-router.put('/edit/:id', async (request, response) => {
+router.put('/edit/:id', withAuth, async (request, response) => {
     try {
         const updatePost = await TechBlog.update({
             title: request.boby.title, content: request.body.content,
         });
-        response.status(200).json(updatePost);
+        response.json(updatePost);
     } catch (err) {
-        response.status(400).json(err);
+        response.json(err);
     }
 });
 // delete, using destroy(?)
-router.delete('/delete/:id', async (request, response) => {
+router.delete('/:id', withAuth, async (request, response) => {
     try {
         const destroyedPost = await TechBlog.destroy({
             where: {
@@ -36,11 +36,11 @@ router.delete('/delete/:id', async (request, response) => {
         })
         // .then(())
         if (!destroyedPost) {
-            response.status(404).json({ message: 'No post found with this ID' });
+            response.json({ message: 'No post found with this ID' });
             return;
-        } response.status(200).json(destroyedPost);
+        } response.json(destroyedPost);
     } catch (err) {
-        response.status(400).json(err);
+        response.json(err);
     }
 });
 

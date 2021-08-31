@@ -2,12 +2,12 @@
 // how to get username to connect to post!
 // BELONGSTO!
 
-const { Model, DataTypes, BelongsTo } = require('sequelize');
+const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
-class Project extends Model { };
+class Posts extends Model { };
 
-BelongsTo.init({
+Posts.init({
     id: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -21,6 +21,9 @@ BelongsTo.init({
     content: {
         type: DataTypes.TEXT,
         allowNull: false,
+        validate: {
+            len: [1],
+        },
     },
     date: {
         type: DataTypes.DATE,
@@ -39,3 +42,5 @@ BelongsTo.init({
     modelName: 'posts',
 }
 );
+
+module.exports = Posts;

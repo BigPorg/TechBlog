@@ -2,6 +2,21 @@ const router = require('express').Router();
 const { request, response } = require('express');
 const { Users } = require('../../models');
 
+router.post('/', async (request, response) => {
+    try {
+        const userData = await User.create(request.body);
+
+        request.session.save(() => {
+            request.session.user_id = userData.id;
+            request.session.logged_in = true;
+
+            response.status(200).json(userData);
+        });
+    } catch (err) {
+        response.status(400).json(err);
+    }
+});
+
 router.post('/login', async, (request, response) => {
     try {
         const userData = await Users.findOne({ where: { username: request.body.username } });
